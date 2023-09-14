@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title> Elektronsko vodjenje trezora | Trezor Panel </title>
+    <link rel="stylesheet" href="trezor.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx'>
+                <img src="bamcardlogo.png" width="30px" height="30px" draggable="false" />
+            </i>
+            <span class="logo_name">Trezor</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="trezor">
+                    <i class='bx bx-down-arrow-circle'></i>
+                    <span class="links_name">Ulaz novih kartica</span>
+                </a>
+            </li>
+            <li>
+                <a href="nalog.html">
+                    <i class='bx bx-book-content'></i>
+                    <span class="links_name">Radni nalog </span>
+                </a>
+            </li>
+
+
+
+            <li>
+                <a href="otpis.html" class="active">
+                    <i class='bx bx-x-circle'></i>
+                    <span class="links_name">Otpis </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="trezorDashboard.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="links_name">Trezor Dashboard </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="reporting.html">
+                    <i class='bx bxs-report'></i>
+                    <span class="links_name">Reporting</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Odjavi se</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Otpis</span>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-center">
+                    <i class='bx bx-user'></i>
+                    <span class="admin_name" id="nameAndSurname">
+                        <script>
+                            fetch('/namesAndSurnames')
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data);
+                                    const nameAndSurnameElement = document.getElementById('nameAndSurname');
+                                    data.forEach((user, index) => {
+                                        const userElement = document.createElement('span');
+                                        userElement.textContent = user;
+
+                                        nameAndSurnameElement.appendChild(userElement);
+                                        if (index !== data.length - 1) {
+                                            const whitespaceElement = document.createTextNode(' - ');
+                                            nameAndSurnameElement.appendChild(whitespaceElement);
+                                        }
+                                    });
+                                });
+
+
+                        </script>
+                    </span>
+                </div>
+            </div>
+
+        </nav>
+
+        <div class="home-content" id="home-content-otpis">
+            <div class="container" id="container-scale">
+                <div class="title">Kartice koje se ne koriste-otpis</div>
+                <div class="content">
+                    <form action="submit-otpis1" method="POST">
+                        <div class="user-details">
+                            <div class="input-box">
+                                <span class="details">Datum</span>
+                                <input type="date" placeholder="Unesi datum" required name="otpisDate">
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Banka</span>
+
+                                <select id="bankaDropdown" name="otpisBanka" required>
+                                    <option value="" disabled selected>Odaberi banku</option>
+                                    <option value="1">BBI</option>
+                                    <option value="2">Union</option>
+                                    <option value="3">ASA</option>
+                                    <option value="4">NLB</option>
+                                    <option value="5">Sparkasse</option>
+                                    <option value="6">Ziraat</option>
+
+
+
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Proizvod</span>
+
+                                <select id="productNameDropdown" name="otpisProizvod" required>
+                                    <option value="" disabled selected>Select a product</option>
+                                </select>
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Vrsta chipa</span>
+                                <input type="text" placeholder="Unesi vrstu chipa" required name="vrstaChipa">
+                            </div>
+
+
+                        </div>
+                        <div class="button">
+
+
+                            <input type="submit" value="Podnesi">
+                        </div>
+
+
+                        <div class="title"></div>
+
+
+
+
+                        <div class="input-state">
+                            <span class="details">Stanje</span>
+                            <input type="number" placeholder="Trenutno Stanje" required id="stanje" name="stanje">
+                        </div>
+                    </form>
+
+
+                    <div class="title"></div>
+                    <div class="input-box">
+                        <span class="details" id="details-2">Broj ponude za otpis</span>
+                        <input type="text" placeholder="#" required id="input-details-1">
+                    </div>
+
+
+
+                    <div class="mover">
+                        <div class="dropdown">
+                            <button class="dropbtn">Ponuda prihvaćena</button>
+                            <div class="dropdown-content">
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" class="list-item">Da</a></li>
+                                    <li><a href="#" class="list-item">Ne</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">Kartice uništene</button>
+                            <div class="dropdown-content">
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" class="list-item">Da</a></li>
+                                    <li><a href="#" class="list-item">Ne</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+    </section>
+
+    <script>
+     let sidebar = document.querySelector(".sidebar");
+  let sidebarBtn = document.querySelector(".sidebarBtn");
+  sidebarBtn.onclick = function() {
+    sidebar.classList.toggle("active");
+    if(sidebar.classList.contains("active")){
+    sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+  }else
+    sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+  }
+
+
+    </script>
+    <script>
+
+    const bankaDropdown = document.getElementById('bankaDropdown');
+    const productNameDropdown = document.getElementById('productNameDropdown');
+
+
+    const clientOptions = {
+      1: [
+        { value: 'Business', text: 'Business' },
+        { value: 'Premium', text: 'Premium' },
+        { value: 'Standard', text: 'Standard' }
+      ],
+      2: [
+        { value: 'VISA Shopping', text: 'VISA Shopping' },
+        { value: 'VISA Classic', text: 'VISA Classic' },
+        { value: 'VISA Classic Prepaid', text: 'VISA Classic Prepaid' },
+        { value: 'Teen', text: 'Teen' },
+        { value: 'Business', text: 'Business' },
+        { value: 'Premium', text: 'Premium' },
+
+      ],
+      3: [
+        { value: 'Super Naša', text: 'Super Naša' },
+        { value: 'Visa PrePaid', text: 'Visa PrePaid' },
+        { value: 'Business Debit', text: 'Business Debit' },
+
+      ],
+
+      4: [
+      { value: 'Mastercard Standard Charge', text: 'Mastercard Standard Charge' },
+      { value: 'Mastercard Standard Revolving', text: 'Mastercard Standard Revolving' },
+
+
+      ],
+
+      5: [
+      { value: 'Visa Debit', text: 'Visa Debit' },
+      { value: 'Mastercard Debit', text: 'Mastercard Debit' },
+
+      ],
+      6: [
+      { value: 'Teen', text: 'Teen' },
+      { value: 'Standard', text: 'Standard' },
+
+
+      ],
+
+
+    };
+
+
+    function populateProductNameDropdown() {
+      const selectedClient = bankaDropdown.value;
+      const options = clientOptions[selectedClient] || [];
+
+
+      productNameDropdown.innerHTML = '';
+
+
+      options.forEach((option) => {
+        const { value, text } = option;
+        const optionElement = document.createElement('option');
+        optionElement.value = value;
+        optionElement.textContent = text;
+        productNameDropdown.appendChild(optionElement);
+      });
+    }
+
+
+    bankaDropdown.addEventListener('change', populateProductNameDropdown);
+
+
+    populateProductNameDropdown();
+    </script>
+
+</body>
+</html>

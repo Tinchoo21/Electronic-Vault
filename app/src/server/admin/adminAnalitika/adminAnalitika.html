@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset=”utf-8″ />
+    <title> Elektronsko vodjenje trezora | Admin Panel </title>
+    <link rel="stylesheet" href="adminAnalitika.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx'>
+                <img src="bamcardlogo.png" width="30px" height="30px" draggable="false" />
+            </i>
+            <span class="logo_name">BamCard Admin</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="admin">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Panel</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="active">
+                    <i class='bx bx-pie-chart-alt-2'></i>
+                    <span class="links_name">Analitika</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminKlijenti">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="links_name">Klijenti i proizvodi</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminDodajKlijenta">
+                    <i class='bx bxs-book-add'></i>
+                    <span class="links_name">Dodaj klijenta</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminListaUposlenih">
+                    <i class='bx bx-list-ul'></i>
+                    <span class="links_name">Lista uposlenih</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminTim">
+                    <i class='bx bx-user'></i>
+                    <span class="links_name">Dodaj uposlenika</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Odjavi se</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Analitika</span>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-center">
+                    <i class='bx bx-user'></i>
+                    <span class="admin_name" id="nameAndSurname">
+                        <script>
+                            fetch('/nameAndSurname')
+                                .then(response => response.text())
+                                .then(data => {
+                                    document.getElementById('nameAndSurname').textContent = data;
+                                });
+                        </script>
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="home-content">
+           
+            <div class="overview-boxes">
+                <div class="top-sales box">
+                    <div class="form-style-5">
+                        <form id="chooseClient">
+                            <fieldset>
+                                <div class="analyticsFirstDiv">
+                                    <legend>Izaberi klijenta i proizvod </legend>
+                                    <i class='bx bxs-bank'></i>
+                                </div>
+                                <select id="clients-dropdown" class="client-drop"></select>
+                                <select id="products-dropdown" multiple ></select>
+
+                            </fieldset>
+                        </form>
+                        <span id="error-message"></span>
+                    </div>
+                </div>
+                <div class="top-sales box info">
+
+                </div>
+            </div>
+            <div class="sales-boxes" id="analitikaGlavni">
+                <div class="recent-sales box" id="Analitik">
+                    <div class="title"></div>
+                    <div id="mainChart">
+                        <div class="inputDate">
+                            <label>Od:</label>
+                            <input id="startDate" type="date" min="2022-06-01" lang="bs"/>
+                            <label>Do:</label>
+                            <input id="endDate" type="date" min="2022-06-02" />
+                        </div>
+                        <button id="generate-chart">Generisi analitiku</button>
+                    </div>
+                    <canvas id="card-input-chart"></canvas>
+                    <div>
+                        <div id="prediction" class="title ">
+                            Predikcija potrošnje
+                        </div>
+
+                    </div> <canvas id="productGraph"></canvas>
+                    <div id="lds-ring-overlay"></div>  <div id="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+
+                <div id="btnDiv">
+                    <button class="btnPdfGenerate" onclick="generatePDF()">Generisi PDF</button>
+                </div>
+            </div>
+
+        </div> 
+    </section>
+   
+    <script>
+        function generatePDF() {
+            const element = document.getElementById('Analitik');
+            const loadingScreen = document.getElementById('lds-ring');
+            const loadingGreyedScreen = document.getElementById('lds-ring-overlay');
+
+            const genertBtn = document.getElementById('generate-chart')
+            loadingGreyedScreen.style.display = 'inline-block';
+            loadingScreen.style.display = 'inline-block';
+
+            window.jsPDF = window.jspdf.jsPDF;
+            const pdf = new jsPDF('1', 'pt');
+
+            setTimeout(() => {
+                loadingGreyedScreen.style.display = 'none';
+                loadingScreen.style.display = 'none';
+                genertBtn.style.display = 'none';
+
+                html2canvas(element, { scale: 2 }).then((canvas) => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save('analitika.pdf');
+                    genertBtn.style.display = 'block'
+                });
+            }, 200); 
+            
+
+        }
+
+
+
+        var myChart;
+        var secondChart;
+        var selectGraph = document.getElementById('select-months');
+
+        function drawChart(startDate, endDate) {
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            if (secondChart) {
+                secondChart.destroy();
+            }
+            var ctx = document.getElementById('card-input-chart').getContext('2d');
+            const selectedClient = document.querySelector('#clients-dropdown').value;
+            const selectedProducts = Array.from(document.querySelectorAll('#products-dropdown option:checked')).map(option => option.innerText);
+            console.log(selectedProducts)
+
+            fetch(`/dataAnalytics?client=${selectedClient}&product=${encodeURIComponent(JSON.stringify(selectedProducts))}&startDate=${startDate}&endDate=${endDate}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    var wrappedData = {};
+
+                    data.forEach(function (d) {
+                        var year = d.year;
+                        var month = d.month;
+                        var day = d.day;
+                        if (!wrappedData.hasOwnProperty(year)) {
+                            wrappedData[year] = {};
+                        }
+                        if (!wrappedData[year].hasOwnProperty(month)) {
+                            wrappedData[year][month] = {
+                                cardInputs: [],
+                                usedCards: [],
+                                days: {}
+                            };
+                        }
+                        wrappedData[year][month].cardInputs.push(Number(d.total_quantity_input));
+                        wrappedData[year][month].usedCards.push(Number(d.total_quantity_used));
+                        if (!wrappedData[year][month].days.hasOwnProperty(day)) {
+                            wrappedData[year][month].days[day] = {
+                                cardInputs: 0,
+                                usedCards: 0
+                            };
+                        }
+                        wrappedData[year][month].days[day].cardInputs += Number(d.total_quantity_input);
+                        wrappedData[year][month].days[day].usedCards += Number(d.total_quantity_used);
+                    });
+                    console.log(wrappedData)
+                    var years = Object.keys(wrappedData);
+                    var isDayLabels = false;
+                    var startDateObj = new Date(startDate);
+                    var endDateObj = new Date(endDate);
+                    var daysDiff = Math.floor((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
+                    if (daysDiff <= 31) {
+                        isDayLabels = true;
+                    }
+                    var labels = [];
+                    var cardInputs = [];
+                    var usedCards = [];
+                    for (var i = 0; i < years.length; i++) {
+                        var year = years[i];
+                        var months = Object.keys(wrappedData[year]);
+                        for (var j = 0; j < months.length; j++) {
+                            var month = months[j];
+                            if (isDayLabels) {
+                                var days = Object.keys(wrappedData[year][month].days);
+                                for (var k = 0; k < days.length; k++) {
+                                    var day = days[k];
+                                    labels.push(day + '/' + month + '/' + year);
+                                    cardInputs.push(wrappedData[year][month].days[day].cardInputs);
+                                    usedCards.push(wrappedData[year][month].days[day].usedCards);
+                                }
+                            } else {
+                                labels.push(month + '/' + year);
+                                cardInputs.push(wrappedData[year][month].cardInputs.reduce(function (acc, val) {
+                                    return acc + val;
+                                }, 0));
+                                usedCards.push(wrappedData[year][month].usedCards.reduce(function (acc, val) {
+                                    return acc + val;
+                                }, 0));
+                            }
+                        }
+                    }
+                    console.log(wrappedData)
+
+                    console.log(startDate)
+                    console.log(endDate)
+
+                    const startDateInp = new Date(startDate);
+                    const endDateInp = new Date(endDate);
+
+                    const timeDifference = endDateInp.getTime() - startDateInp.getTime();
+                    const daysBetween = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+                    console.log(daysBetween)
+
+                    let totalQuantityUsed = 0;
+
+                    for (const year in wrappedData) {
+                        const yearData = wrappedData[year];
+                        for (const month in yearData) {
+                            const monthData = yearData[month];
+                            const days = monthData.days;
+                            for (const day in days) {
+                                const dayData = days[day];
+                                totalQuantityUsed += parseInt(dayData.usedCards);
+                            }
+                        }
+                    }
+
+                    console.log(totalQuantityUsed)
+
+                    let averageConsumption = totalQuantityUsed / daysBetween;
+                    console.log(averageConsumption)
+
+
+
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Ulaz novih kartica',
+                                    data: cardInputs,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1,
+                                },
+                                {
+                                    label: 'Potrosene kartice',
+                                    data: usedCards,
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1,
+                                },
+                            ],
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [
+                                    {
+                                        ticks: {
+                                            min: 0,
+                                            max: 100,
+                                            stepSize: 10,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    });
+
+                    let choosenProduct = 0;
+                    let daysToZero;
+                    fetch(`/banks/${selectedClient}/products`)
+                        .then(response => response.json())
+                        .then(data => {
+                            selectedProducts.forEach((selectedProduct) => { 
+                                data.forEach((dat) => {
+                                    if (dat.product_name === selectedProduct) {
+                                        choosenProduct += Number(dat.total_number_of_products); 
+                                    }
+                                });
+                            });
+                            console.log(choosenProduct)
+                            daysToZero = Math.ceil(choosenProduct / averageConsumption);
+                            console.log(daysToZero);
+
+                            const labels = [];
+                            const dataPoints = [];
+                            let currentProduct = choosenProduct;
+
+                            const today = new Date();
+                            const endDate = new Date(today);
+                            endDate.setDate(today.getDate() + daysToZero);
+
+                            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                            const startDateFormatted = today.toLocaleDateString(undefined, options);
+                            const endDateFormatted = endDate.toLocaleDateString(undefined, options);
+
+                            labels.push(startDateFormatted);
+                            dataPoints.push(currentProduct);
+
+                            let currentDate = new Date(today);
+                            currentDate.setMonth(currentDate.getMonth() + 1);
+
+                            while (currentDate < endDate) {
+                                const monthFormatted = currentDate.toLocaleDateString(undefined, { month: 'short' });
+                                labels.push(monthFormatted);
+
+                                const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+                                const consumption = averageConsumption * daysInMonth;
+                                currentProduct -= consumption;
+                                currentProduct = Math.round(currentProduct);
+                                dataPoints.push(currentProduct);
+
+                                currentDate.setMonth(currentDate.getMonth() + 1);
+                            }
+
+                            labels.push(endDateFormatted);
+                            dataPoints.push(0);
+
+                            console.log("Start Date: " + startDateFormatted);
+                            console.log("End Date: " + endDateFormatted);
+
+                            const ctx = document.getElementById('productGraph').getContext('2d');
+                            secondChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: 'Broj plastika',
+                                        data: dataPoints,
+                                        fill: false,
+                                        borderColor: '#0A2558',
+                                        tension: 0.1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            stepSize: 1
+                                        }
+                                    }
+                                }
+                            });
+                        })
+
+
+                        .catch(error => {
+                            console.error(error);
+                        });
+
+                    let generateBtn = document.getElementById('btnDiv');
+                    generateBtn.style.display = 'block';
+
+
+                });
+
+
+
+
+
+        };
+        document.getElementById('generate-chart').addEventListener('click', function () {
+            var endDate = new Date();
+            var endDate = new Date(document.getElementById("endDate").value);
+            var startDate = new Date(document.getElementById("startDate").value);
+            drawChart(startDate.toISOString(), endDate.toISOString());
+        });
+
+
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        const mainDiv = document.getElementById('analitikaGlavni');
+        let title = document.querySelector(".title");
+        console.log(title)
+        let productName = ""
+
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+
+
+        const select = document.querySelectorAll('#clients-dropdown');
+        const productSelect = document.getElementById('products-dropdown');
+        productSelect.disabled = true;
+        const clientSelect = document.getElementById('clients-dropdown');
+        const infoDiv = document.querySelector('.info');
+
+        select.forEach(function (item) {
+            fetch('/clients')
+                .then(response => response.json())
+                .then(clients => {
+                    clients.forEach(client => {
+                        const option = document.createElement('option');
+                        option.value = client.id;
+                        option.text = client.client_name;
+                        item.appendChild(option);
+
+                    });
+                });
+
+        });
+
+        let productSelectChangeHandler;
+        let requestInProgress = false;
+
+        clientSelect.addEventListener('click', function (event) {
+            event.stopImmediatePropagation();
+
+            if (requestInProgress) {
+                return;
+            }
+
+            const clientId = this.value;
+            infoDiv.innerHTML = "";
+
+            if (productSelectChangeHandler) {
+                productSelect.removeEventListener('change', productSelectChangeHandler);
+            }
+            if (myChart) {
+                myChart.destroy();
+            }
+            if (secondChart) {
+                secondChart.destroy();
+            }
+            infoDiv.style.setProperty('display', 'none', 'important');
+            productSelect.innerHTML = '';
+            mainDiv.style.display = "none";
+
+            requestInProgress = true;
+
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                requestInProgress = false;
+                if (xhr.status === 200) {
+                    const products = JSON.parse(xhr.responseText);
+                    if (products.length === 0) {
+                        infoDiv.style.setProperty('display', 'none', 'important');
+                        productSelect.innerHTML = '';
+                        mainDiv.style.display = "none";
+                        const option = document.createElement('option');
+                        option.text = "Za ovog klijenta nema unešenih proizvoda";
+                        productSelect.appendChild(option);
+                        productSelect.disabled = true;
+                    } else {
+                        productSelect.innerHTML = '';
+                        products.forEach(function (product) {
+                            const option = document.createElement('option');
+                            option.value = product.product_id;
+                            option.text = product.name;
+                            productSelect.appendChild(option);
+                        });
+                        
+
+                        productSelect.disabled = false;
+
+                        productSelectChangeHandler = async function () {
+                            if (myChart) {
+                                myChart.destroy();
+                            }
+                            if (secondChart) {
+                                secondChart.destroy();
+                            }
+                            const productId = this.value;
+                            let clientName = document.getElementById('clients-dropdown').selectedOptions[0].innerText;
+                            title.innerHTML = productName + " -- " + clientName;
+                            console.log(productName)
+
+
+                            const selectedOptions = Array.from(this.selectedOptions);
+                            const selectedProductIds = selectedOptions.map(option => option.value);
+                            const selectedProductIdsString = selectedProductIds.join(',');
+
+                            title.innerHTML = selectedOptions.map(option => option.text).join(", ") + " -- " + clientName;
+
+                            console.log(selectedProductIds);
+
+                            try {
+                                const response = await fetch(`/paymentnetwork?productId=${productId}`);
+                                const payment = await response.json();
+                                mainDiv.style.display = "block";
+                                const paymentNetwork = payment.payment_network;
+                                if (paymentNetwork === "Visa") {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="visalogo.png"/>';
+                                }
+                                else if (paymentNetwork === "MasterCard") {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="mastercard.png"/>';
+                                }
+                                else if (paymentNetwork === "AmericanExpress") {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="americanlogo.png"/>';
+                                }
+                                else if (paymentNetwork === "DiscoverNetwork") {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="discover.png"/>';
+                                }
+                                else if (paymentNetwork === "Bamcard") {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="bamcardlogo.png"/>';
+                                }
+                                else if (paymentNetwork === "Dinners") {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="dinners.png"/>';
+                                }
+                                else {
+                                    infoDiv.style.setProperty('display', 'block', 'important');
+                                    infoDiv.innerHTML = '<img src="card.png"/>';
+                                }
+
+                            } catch (error) {
+                                
+                            }
+                        };
+                        productSelect.addEventListener('click', productSelectChangeHandler);
+                    }
+                } else {
+                    document.getElementById('error-message').textContent = 'Greška';
+                }
+            };
+            xhr.open('GET', `/productsname?clientId=${clientId}`);
+            xhr.send();
+        });
+
+
+        function updateLdsRingPosition() {
+            const screenWidth = window.innerWidth;
+            const sidebarwid = document.querySelector('.sidebar');
+            const sidebarWidth = getComputedStyle(sidebarwid).width;
+
+            const ldsRing = document.querySelector('#lds-ring');
+            const rigthPosition = `calc( (${screenWidth}px - ${sidebarWidth})/ 2 - 40px)`;
+            ldsRing.style.right = rigthPosition;
+        }
+
+        updateLdsRingPosition();
+        const sidebarwidth = document.querySelector('.sidebar');
+        const sidebarObserver = new ResizeObserver(updateLdsRingPosition);
+        sidebarObserver.observe(sidebar);
+
+
+      
+
+    </script>
+
+</body>
+
+</html>

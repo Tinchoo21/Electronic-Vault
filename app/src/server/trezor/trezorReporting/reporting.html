@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="trezor-reporting.css">
+    <link rel="stylesheet" href="reporting.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <title>Reporting</title>
+   
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+          <i class='bx'>
+            <img src="/media/bamcard-logo.png" width="30px" height="30px" draggable="false"/>
+          </i>
+          <span class="logo_name">Trezor</span>
+        </div>
+          <ul class="nav-links">
+            <li>
+              <a href="trezor" >
+                <i class='bx bx-down-arrow-circle'></i>
+                <span class="links_name">Ulaz novih kartica</span>
+              </a>
+            </li>
+            <li>
+              <a href="nalog.html"> 
+                <i class='bx bx-book-content'></i>
+                <span class="links_name">Radni nalog </span>
+              </a>
+            </li>
+            
+            <!--<li>
+              <a href="/Trezor/pregled.html"> 
+                <i class='bx bx-book-content'></i>
+                <span class="links_name">Pregled </span>
+              </a>
+            </li>-->
+    
+            
+            <li>
+              <a href="otpis.html" >
+                <i class='bx bx-x-circle'></i>
+                <span class="links_name">Otpis </span>
+              </a>
+            </li>
+    
+            <li>
+              <a href="trezorDashboard.html">
+                <i class='bx bxs-dashboard' ></i>
+                <span class="links_name">Trezor Dashboard </span>
+              </a>
+            </li>
+    
+            <li>
+                <a href="reporting.html"  class="active">
+                  <i class='bx bxs-report'></i>
+                  <span class="links_name">Reporting</span>
+                </a>
+              </li>
+            
+          </ul>
+      </div>
+      <section class="home-section">
+
+        <nav >
+            <div class="sidebar-button">
+              <i class='bx bx-menu sidebarBtn'></i>
+              <span class="dashboard">Reporting</span>
+            </div>
+            <div class="place"></div>
+            <div class="profile-details" id="details">
+              <div class="profile-center">
+              <i class='bx bx-user'></i>
+              <span class="admin_name">User</span>
+            </div>
+            </div>
+            
+          </nav>
+          <!--main content of the page-->
+
+
+<div class="container">
+    <div class="main">
+          <div class="cardBox">
+             <div class="card">
+
+
+
+
+              <div class="input-box"> 
+                <span class="details"><b>Klijent</b></span>
+                <select id="clients-dropdown" name="client_id" onchange="changeBankImage()">
+                  <option value="type"> Odaberi Klijenta </option>
+                  
+                </select>
+                <div class="input-box">
+                  <span class="details"><b>Ime Produkta</b></span>
+                  <select id="products-dropdown" name="product_name">
+                    <option value="product_name"> Odaberi Proizvod </option>
+                  </select>
+                </div>
+              </div>
+              
+                
+              
+                <div>
+                  <!--<button class="dropbtn">Select an option</button>-->
+                 <!--  <div class="numbers">Odaberi Banku</div>-->
+                  <div class="dropdown">
+
+                     
+                    
+                     
+                    <div class="dropdown-content">
+                      
+                      <a onclick="changeImage('BBI', 'bbi.png')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="bbi.png" alt="BBI" style="width: 100%; height: 100%;">
+                      </a>
+                      <a onclick="changeImage('Union Banka', 'union.png')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="union.png" alt="Union Banka" style="width: 100%; height: 100%;">
+                      </a>
+                      <a onclick="changeImage('ASA Banka', 'asa.png')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="asa.png" alt="ASA Banka" style="width: 100%; height: 100%;">
+                      </a>
+                      <a onclick="changeImage('NLB Banka', '/media/nlbfinal.png')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="/media/nlbfinal.png" alt="NLB Banka" style="width: 100%; height: 100%;">
+                      </a>
+                      <a onclick="changeImage('Sparkasse Banka', '/media/sparka.png')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="/media/sparka.png" alt="Sparkasse Banka" style="width: 100%; height: 100%;">
+                      </a>
+                      <a onclick="changeImage('Ziraat Banka', '/media/zirat.png')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="/media/zirat.png" alt="Ziraat Banka" style="width: 100%; height: 100%;">
+                      </a>
+                      <a onclick="changeImage('UniCredit', '/media/UniCredit.jpg')" style="width: 25px; height: 25px; display: inline-block; overflow: hidden;">
+                        <img src="/media/UniCredit.jpg" alt="UniCredit" style="width: 100%; height: 100%;">
+                      </a>
+
+                     
+
+                      
+
+
+
+                      
+                      
+                      
+                      
+
+                    </div>
+                  </div>
+
+                  
+                  
+                </div>
+
+               
+
+
+                <div class="iconBx">
+                  <i class='bx bxs-bank'></i>
+                </div>
+              </div>
+
+              <div class="card">
+                <div>
+                  <img id="bank-image" src="/media/bamcard-logo.png" alt="Bank Image"style="width: 155px; height: 155px; margin-left: 105px;">
+                  
+                </div>
+                
+              </div>
+              
+
+              
+            </div>
+
+            
+            <div  id="newDiv">
+              
+            </div>
+
+
+
+            <div id="secondNewDiv"></div>
+            
+
+            <div class="container">
+              <div class="report-date">
+                <label for="year-dropdown">Odaberi godinu:</label>
+                <select id="year-dropdown">
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                </select>
+                <label for="month-dropdown">Odaberi mjesec:</label>
+                <select id="month-dropdown">
+                  <option value="1">Januar</option>
+                  <option value="2">Februar</option>
+                  <option value="3">Mart</option>
+                  <option value="4">April</option>
+                  <option value="5">Maj</option>
+                  <option value="6">Juni</option>
+                  <option value="7">Juli</option>
+                  <option value="8">August</option>
+                  <option value="9">Septembar</option>
+                  <option value="10">Oktobar</option>
+                  <option value="11">Novembar</option>
+                  <option value="12">Decembar</option>
+                </select>
+              </div>
+              
+              <div class="card" id="button-card">
+                <div class="card-content">
+                  <h2>Generiši report <i class='bx bxs-report'></i></h2>
+                  <p>BamCard d.d.</p>
+                  <button id="generisi-button">generiši</button>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-content" id="display-results">
+                  
+                </div>
+              </div>
+            </div>
+            
+            
+
+
+
+
+
+
+
+
+        </div>
+        </div>
+
+
+
+    
+
+
+
+
+
+
+
+      </section>
+  <script src="./reporting.js"></script>
+      <script>
+        function changeImage(bankName, imageUrl) {
+          var img = document.getElementById("bank-logo");
+          img.alt = bankName + " logo";
+          img.src = imageUrl;
+        }
+      </script>
+      
+      <script src="./dashboard.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+      <script>
+        let sidebar = document.querySelector(".sidebar");
+      let sidebarBtn = document.querySelector(".sidebarBtn");
+      sidebarBtn.onclick = function() {
+       sidebar.classList.toggle("active");
+       if(sidebar.classList.contains("active")){
+       sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+      }else
+       sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+      }
+      
+      
+      </script>
+
+<script>
+  const clientSelect = document.getElementById('clients-dropdown');
+const productSelect = document.getElementById('products-dropdown');
+
+fetch('/clients')
+  .then(response => response.json())
+  .then(clients => {
+    clients.forEach(client => {
+      const option = document.createElement('option');
+      option.value = client.id;
+      option.text = client.client_name;
+      clientSelect.appendChild(option);
+    });
+  });
+
+clientSelect.addEventListener('change', fetchProducts);
+
+function fetchProducts() {
+  const clientID = clientSelect.value;
+  if (!clientID) {
+    
+    productSelect.innerHTML = '<option value="">-- Select Product --</option>';
+    return;
+  }
+
+  fetch(`/products/${clientID}`)
+    .then(response => response.json())
+    .then(products => {
+      productSelect.innerHTML = '<option value=""> Odaberi Produkt </option>'; //(uklonjen select product inner html)
+      products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.product_id;
+        option.text = product.name;
+        productSelect.appendChild(option);
+      });
+    });
+}
+
+</script>
+<script>
+  function changeImage(bankName, imageURL) {
+    document.getElementById('bank-image').src = imageURL;
+  }
+
+  function changeBankImage() {
+    const clientSelect = document.getElementById('clients-dropdown');
+    const bankName = clientSelect.options[clientSelect.selectedIndex].text;
+    
+    const bankImages = {
+      "BBI": "bbi.png",
+      "Union Banka": "union.png",
+      "ASA Banka": "asa.png",
+      "NLB Banka": "nlbfinal.png",
+      "Sparkasse Banka": "sparka.png",
+      "Ziraat Banka": "zirat.png",
+      "UniCredit": "UniCredit.jpg",
+
+
+
+      
+    };
+
+    const imageURL = bankImages[bankName];
+    changeImage(bankName, imageURL);
+  }
+
+  
+</script>
+
+<script>
+  function generisiReport() {
+
+
+    const productSelect = document.getElementById('products-dropdown');
+    const produktId = clientSelect.options[productSelect.selectedIndex].value;
+
+
+    const mjesecSelect = document.getElementById('mjesec-dropdown');
+    const mjesec = mjesecSelect.options[mjesecSelect.selectedIndex].value;
+
+
+    const godineSelect = document.getElementById('godine-dropdown');
+    const godina = godineSelect.options[godineSelect.selectedIndex].value;
+
+   
+  
+    fetch(`/stanje/${produktId}/${mjesec}/${godina}`)
+    .then(response => response.json())
+    .then(stanja => {
+      // OVDJE DODAti SAD PRAVLJENJE TABELE , STANJA CE SADRZAVATI SKART I OSTALO, SAMO TO UBACI U TABELU OVDJE
+      
+      productSelect.innerHTML = '<option value="">-- Select Product --</option>';
+      products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.product_id;
+        option.text = product.name;
+        productSelect.appendChild(option);
+      });
+    });
+  }
+</script>
+
+<script>
+  // Dohvatite referencu na button element
+  const generisiButton = document.getElementById('generisi-button');
+  
+  // Dodajte event listener za klik na dugme
+  generisiButton.addEventListener('click', async () => {
+    // Dohvatite vrijednosti iz dropdown menija
+    const selectedProductName = document.getElementById('products-dropdown').value;
+    const selectedYear = document.getElementById('year-dropdown').value;
+    const selectedMonth = document.getElementById('month-dropdown').value;
+  
+    // Posaljite upit u SQL
+    const stanja = await getStanjeByProductMonthYear(selectedProductName, selectedMonth, selectedYear);
+    
+    // Prikazi stanje u konzoli
+    console.log(stanja);
+  });
+  
+  // Funkcija za dobavljanje stanja na osnovu odabranih vrijednosti
+  async function getStanjeByProductMonthYear(productName, month, year) {
+    try {
+      const response = await fetch(`/stanje/${productName}/${month}/${year}`);
+      const stanja = await response.json();
+      return stanja;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  </script>
+
+<script>
+  // Dohvatite referencu na card-content element
+const cardContent = document.getElementById('display-results');
+
+// Dodajte event listener za klik na dugme
+generisiButton.addEventListener('click', async () => {
+  // Dohvatite vrijednosti iz dropdown menija
+  const selectedProductName = document.getElementById('products-dropdown').value;
+  const selectedYear = document.getElementById('year-dropdown').value;
+  const selectedMonth = document.getElementById('month-dropdown').value;
+
+  // Posaljite upit u SQL
+  const stanja = await getStanjeByProductMonthYear(selectedProductName, selectedMonth, selectedYear);
+  
+  // Prikazi stanje u card-content
+  displayStanje(stanja);
+});
+
+// Funkcija za prikazivanje stanja u card-content
+function displayStanje(stanja) {
+  // Očistite prethodne podatke iz card-content
+  cardContent.innerHTML = '';
+
+  // Kreirajte elemente za svako stanje i dodajte ih u card-content
+  stanja.forEach((stanje) => {
+    const skart = stanje.skart;
+    const utroseno = stanje.utroseno;
+    const stanjeText = stanje.stanje;
+    const konacnoStanje = stanje.konacno_stanje;
+
+    // Kreirajte <p> elemente za svaku vrijednost i dodajte ih u card-content
+    const skartElement = document.createElement('p');
+    skartElement.textContent = `Škart: ${skart}`;
+
+    const utrosenoElement = document.createElement('p');
+    utrosenoElement.textContent = `Utrošeno: ${utroseno}`;
+
+    const stanjeElement = document.createElement('p');
+    stanjeElement.textContent = `Stanje: ${stanjeText}`;
+
+    const konacnoStanjeElement = document.createElement('p');
+    konacnoStanjeElement.textContent = `Konačno stanje: ${konacnoStanje}`;
+
+    cardContent.appendChild(skartElement);
+    cardContent.appendChild(utrosenoElement);
+    cardContent.appendChild(stanjeElement);
+    cardContent.appendChild(konacnoStanjeElement);
+  });
+}
+
+</script>
+</body>
+</html>

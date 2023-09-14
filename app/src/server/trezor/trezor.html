@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title> Elektronsko vodjenje trezora | Trezor Panel </title>
+    <link rel="stylesheet" href="trezor.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body style="overflow:hidden">
+
+    <div class="sidebar">
+
+        <div class="logo-details">
+
+            <i class='bx'>
+
+                <img src="bamcardlogo.png" width="30px" height="30px" draggable="false" />
+
+            </i>
+
+            <span class="logo_name">Trezor</span>
+
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+
+                <a href="#" class="active">
+
+                    <i class='bx bx-down-arrow-circle'></i>
+
+                    <span class="links_name">Ulaz novih kartica</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="nalog.html">
+
+                    <i class='bx bx-book-content'></i>
+
+                    <span class="links_name">Radni nalog </span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="otpis.html">
+
+                    <i class='bx bx-x-circle'></i>
+
+                    <span class="links_name">Otpis </span>
+
+                </a>
+
+            </li>
+
+
+
+
+            <li>
+
+                <a href="trezorDashboard.html">
+
+                    <i class='bx bxs-dashboard'></i>
+
+                    <span class="links_name">Trezor Dashboard </span>
+
+                </a>
+
+            </li>
+
+
+
+
+            <li>
+
+                <a href="reporting.html">
+
+                    <i class='bx bxs-report'></i>
+
+                    <span class="links_name">Reporting</span>
+
+                </a>
+
+            </li>
+            <li class="log_out">
+                <a href="logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Odjavi se</span>
+                </a>
+            </li>
+
+
+
+        </ul>
+
+    </div>
+
+    <section class="home-section">
+
+        <nav>
+
+            <div class="sidebar-button">
+
+                <i class='bx bx-menu sidebarBtn'></i>
+
+                <span class="dashboard">Ulaz novih kartica</span>
+
+            </div>
+
+
+
+            <div class="profile-details">
+
+                <div class="profile-center">
+
+                    <i class='bx bx-user'></i>
+
+                    <span class="admin_name" id="nameAndSurname">
+                        <script>
+                            fetch('/namesAndSurnames')
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data);
+                                    const nameAndSurnameElement = document.getElementById('nameAndSurname');
+                                    data.forEach((user, index) => {
+                                        const userElement = document.createElement('span');
+                                        userElement.textContent = user;
+
+                                        nameAndSurnameElement.appendChild(userElement);
+                                        if (index !== data.length - 1) {
+                                            const whitespaceElement = document.createTextNode(' - ');
+                                            nameAndSurnameElement.appendChild(whitespaceElement);
+                                        }
+                                    });
+                                });
+
+
+                        </script>
+                    </span>
+                </div>
+
+            </div>
+
+
+
+        </nav>
+
+
+
+        <div class="home-content">
+
+            <div class="container">
+
+                <div class="title">Ulaz novih kartica</div>
+
+                <div class="content">
+
+                    <form action="/trezor/submit" method="POST">
+
+                        <div class="user-details">
+
+                            <div class="input-box">
+
+                                <span class="details">Banka</span>
+
+                                <select id="clients-dropdown" name="client_id" required>
+
+                                    <!--<option value="type">-- Izaberi klijenta --</option>-->
+
+                                </select>
+
+                            </div>
+
+                            <div class="input-box">
+
+                                <span class="details">Proizvod</span>
+
+                                <select id="products-dropdown" name="product_name" required>
+
+                                    <option value="product_name" disabled>--  Izaberi proizvod --</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="input-box">
+
+                                <span class="details">Br. Otpremnice</span>
+
+                                <input type="text" name="delivery_note_number" required>
+
+                            </div>
+
+                            <div class="input-box">
+
+                                <span class="details">Loa</span>
+
+                                <input type="text" name="loa" required>
+
+                            </div>
+
+                            <div class="input-box">
+
+                                <span class="details">Kreirano :</span>
+
+                                <input type="date" name="created_at" required>
+
+                            </div>
+
+                            <div class="input-box">
+
+                                <span class="details">Vrsta čipa</span>
+
+                                <input type="text" name="type" required>
+
+                            </div>
+
+
+
+                            <div class="input-box">
+
+                                <span class="details">Broj Produkata</span>
+
+                                <input type="number" name="number_of_products" min="0"  required>
+
+                            </div>
+
+
+
+
+                            <div class="input-box">
+
+                                <span class="details">Datum isteka čipa</span>
+
+                                <input type="date" name="exp_date" required>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="button">
+
+                            <input type="submit" value="Dodaj">
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+    </section>
+
+    <script>
+
+        let sidebar = document.querySelector(".sidebar");
+
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+
+        sidebarBtn.onclick = function () {
+
+            sidebar.classList.toggle("active");
+
+            if (sidebar.classList.contains("active")) {
+
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+
+            } else
+
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+
+        }
+
+    </script>
+
+
+
+
+    <script>
+
+        const clientSelect = document.getElementById('clients-dropdown');
+
+        const productSelect = document.getElementById('products-dropdown');
+
+
+
+
+        fetch('/clients')
+
+            .then(response => response.json())
+
+            .then(clients => {
+
+                clients.forEach(client => {
+
+                    const option = document.createElement('option');
+
+                    option.value = client.id;
+
+                    option.text = client.client_name;
+
+                    clientSelect.appendChild(option);
+
+                });
+
+            });
+
+
+
+
+        clientSelect.addEventListener('click', fetchProducts);
+
+
+
+
+        function fetchProducts() {
+
+            const clientID = clientSelect.value;
+
+            productSelect.innerHTML = ''
+
+           if (!clientID) {
+
+                productSelect.innerHTML = '<option value="">-- Select Product --</option>';
+
+                return;
+
+            }
+
+
+
+
+            fetch(`/productsname?clientId=${clientID}`)
+
+                .then(response => response.json())
+
+                .then(products => {
+
+                    products.forEach(product => {
+
+                        const option = document.createElement('option');
+
+                        option.value = product.name;
+
+                        option.text = product.name;
+
+                        productSelect.appendChild(option);
+
+                    });
+
+                });
+
+        }
+
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
+

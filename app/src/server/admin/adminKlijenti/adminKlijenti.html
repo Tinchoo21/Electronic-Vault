@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Elektronsko vodjenje trezora | Admin Panel </title>
+    <link rel="stylesheet" href="adminKlijenti.css">
+
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx'>
+                <img src="bamcardlogo.png" width="30px" height="30px" draggable="false" />
+            </i>
+            <span class="logo_name">BamCard Admin</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="admin">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Panel</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminAnalitika">
+                    <i class='bx bx-pie-chart-alt-2'></i>
+                    <span class="links_name">Analitika</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="active">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="links_name">Klijenti i proizvodi</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminDodajKlijenta">
+                    <i class='bx bxs-book-add'></i>
+                    <span class="links_name">Dodaj klijenta</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminListaUposlenih">
+                    <i class='bx bx-list-ul'></i>
+                    <span class="links_name">Lista uposlenih</span>
+                </a>
+            </li>
+            <li>
+                <a href="adminTim">
+                    <i class='bx bx-user'></i>
+                    <span class="links_name">Dodaj uposlenika</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Odjavi se</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Klijenti i proizvodi</span>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-center">
+                    <i class='bx bx-user'></i>
+                    <span class="admin_name" id="nameAndSurname">
+                        <script>
+                            fetch('/nameAndSurname')
+                                .then(response => response.text())
+                                .then(data => {
+                                    document.getElementById('nameAndSurname').textContent = data;
+                                });
+                        </script>
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="home-content">
+            <div id="bank-list" class="overview-boxes">
+            </div>
+            <hr class="new5">
+            <div id="product-list" class="overview-boxes">
+            </div>
+            <hr id="secondHr" class="new5">
+            <div id="productsOnly" class="overview-boxes">
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+
+
+        const secondHr = document.getElementById('secondHr')
+        const tableofProd = document.getElementById('productsOnly')
+
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/banks');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const banks = JSON.parse(xhr.responseText);
+                banks.forEach(function (bank) {
+                    const box = '<div class="box" data-client-id="' + bank.id + '">' +
+                        '<div class="right-side">' +
+                        '<div class="number" id="adminUsers">' + bank.client_name + '  '+' <i class="bx bxs-bank"></i></div>' +
+                        '<div class="box-topic">Br. proizvoda : ' + bank.product_count + '</div>' +
+                        '</div>' +
+                        '</div>';
+                    document.getElementById('bank-list').innerHTML += box;
+
+                    const boxes = document.querySelectorAll('.box');
+
+                    boxes.forEach(async (div) => {
+                        await div.addEventListener('click', () => {
+                            boxes.forEach((d) => {
+                                d.classList.remove('clicked');
+                            });
+                            div.classList.add('clicked');
+
+                            const clientId = div.dataset.clientId;
+                            const xhr2 = new XMLHttpRequest();
+                            xhr2.open('GET', `/banks/${clientId}/products`);
+                            xhr2.onload = function () {
+                                if (xhr2.status === 200) {
+                                    const products = JSON.parse(xhr2.responseText);
+                                    const productBox = document.getElementById('product-list');
+                                    productBox.innerHTML = '';
+                                    products.forEach(function (product) {
+                                        const box = '<div class="box" id="numOfProducts" data-product-name="' + product.product_name + '">' +
+                                            '<div class="right-side">' +
+                                            '<div class="number" >' + product.product_name +  '<i class="bx bxs-credit-card"></i></div>' +
+                                            ' <div class="box-topic">Br. kartica : ' + product.total_number_of_products + '</div>' +
+                                            '</div>' +
+                                            '</div>';
+                                        productBox.innerHTML += box;
+
+                                        const productList = document.querySelectorAll('#numOfProducts');
+                                        console.log(productList)
+                                        tableofProd.style.display = "none";
+                                        secondHr.style.display = "none";
+                                        if (productList.length === 2) {
+                                            document.body.classList.add('two-products');
+                                        } else {
+                                            document.body.classList.remove('two-products');
+                                        }
+                                        productList.forEach(async (div) => {
+                                            await div.addEventListener('click', () => {
+                                                productList.forEach((d) => {
+                                                    d.classList.remove('clickedProduct');
+                                                });
+                                                div.classList.add('clickedProduct');
+
+                                           
+                                                    const xhr3 = new XMLHttpRequest();
+                                                    xhr3.open('GET', `/banks/${clientId}/products/${div.dataset.productName}`);
+                                                    xhr3.onload = function () {
+                                                        if (xhr3.status === 200) {
+
+                                                            const products = JSON.parse(xhr3.responseText);
+
+                                                            secondHr.style.display = "block";
+                                                            let table = ` <div class="title">${div.dataset.productName}</div><table>`;
+                                                            table += '	<div class="table-header"><div class="header__item">ID</div><div class="header__item">Vrsta čipa</div><div class="header__item">Br. Otpremnice</div><div class="header__item">Loa</div><div class="header__item">Stanje</div></div>';
+                                                            table += '<tbody>';
+
+                                                            let data = 0;
+                                                            products.forEach(product => {
+
+                                                                table += `<div class="table-content">
+                                                             <div class="table-row">
+                                                                 <div class="table-data">${product.id}</div>
+                                                                 <div class="table-data">${product.type}</div>
+                                                                 <div class="table-data">${product.delivery_note_number}</div>
+                                                                 <div class="table-data">${product.loa}</div>
+                                                                 <div class="table-data">${product.number_of_products}</div>
+
+
+                                                             </div></div>`;
+                                                            });
+                                                            table += '</tbody></table>';
+
+                                                            document.getElementById('productsOnly').innerHTML = table;
+
+                                                            tableofProd.style.display = "block";
+
+                                                        } else {
+                                                            console.error(xhr3.statusText);
+                                                        }
+                                                    };
+                                                    xhr3.onerror = function () {
+                                                        console.error(xhr3.statusText);
+                                                    };
+                                                    xhr3.send();
+                                                
+                                            })
+                                        })
+                                    })
+
+                                } 
+                            };
+                            xhr2.onerror = function () {
+                                console.error(xhr2.statusText);
+                            };
+                            xhr2.send();
+                        });
+                    });
+                });
+            } /* end of first */else {
+                console.error(xhr.statusText);
+            }
+        };
+        xhr.onerror = function () {
+            console.error(xhr.statusText);
+        };
+        xhr.send();
+
+
+
+        /*const productList = document.querySelectorAll('#product-list');
+        console.log(productList)
+        if (productList.length === 2) {
+          document.body.classList.add('two-products');
+        } else {
+          document.body.classList.remove('two-products');
+        }*/
+    </script>
+
+</body>
+
+</html>

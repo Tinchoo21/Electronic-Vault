@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #data-container {
+            overflow: auto;
+            position: relative;
+        }
+
+            #data-container table.fixed {
+                position: fixed;
+                top: 0;
+                background-color: #fff;
+                z-index: 1;
+            }
+
+
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #0A2558;
+            color: whitesmoke;
+            position: sticky;
+        }
+
+        tr:hover {
+            background-color: rgb(245, 130, 31);
+        }
+
+        #data-container td:nth-child(6) {
+            width: 80px;
+        }
+
+        #data-container td:nth-child(3) {
+            width: 120px;
+        }
+
+        #data-container td:nth-child(2) {
+            width: 70px;
+        }
+
+        #data-container td:nth-child(4) {
+            width: 70px;
+        }
+
+        #data-container td:nth-child(9) {
+            width: 20px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="trezorDashboard.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="dashboardTable.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trezor Dashboard</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx'>
+                <img src="bamcardlogo.png" width="30px" height="30px" draggable="false" />
+            </i>
+            <span class="logo_name">Trezor</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="trezor">
+                    <i class='bx bx-down-arrow-circle'></i>
+                    <span class="links_name">Ulaz novih kartica</span>
+                </a>
+            </li>
+            <li>
+                <a href="nalog.html">
+                    <i class='bx bx-book-content'></i>
+                    <span class="links_name">Radni nalog </span>
+                </a>
+            </li>
+
+
+
+            <li>
+                <a href="otpis.html">
+                    <i class='bx bx-x-circle'></i>
+                    <span class="links_name">Otpis </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#" class="active">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="links_name">Trezor Dashboard </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="reporting.html">
+                    <i class='bx bxs-report'></i>
+                    <span class="links_name">Reporting</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Odjavi se</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Dashboard</span>
+            </div>
+            <div class="place"></div>
+            <div class="profile-details" id="details">
+                <div class="profile-center">
+                    <i class='bx bx-user'></i>
+                    <span class="admin_name">User</span>
+                </div>
+            </div>
+
+        </nav>
+        <div class="home-content">
+            <div class="container">
+
+                <div class="main">
+
+                    <div class="details">
+                        <div class="recentOrders">
+                            <div class="cardHeader" id="product-table">
+                                <h2> Proizvodi </h2>
+
+
+                            </div>
+
+
+
+                            <title>Products Table</title>
+
+
+                            <div id="data-container"></div>
+
+
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="recentCustomers" id="recentCustomersContent">
+                        <div class="cardHeader">
+                            <h2>Klijenti</h2>
+                            <button class="filter-button" data-filter="All" id="filter-button-data">Vidi sve</button>
+
+
+
+                        </div>
+                        <table>
+                            <tbody  id="clients">
+
+                            </tbody>
+                          
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+    </section>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+
+
+    </script>
+
+
+
+    <!--<script>
+        fetch('http://localhost:3000/products')
+          .then(response => response.json())
+          .then(data => {
+            // Process the data and generate HTML elements
+            const dataContainer = document.getElementById('data-container');
+
+            data.forEach(item => {
+              const paragraph = document.createElement('p');
+              paragraph.textContent = `ID: ${item.id}, Type: ${item.type}, Product Name: ${item.product_name}`;
+              dataContainer.appendChild(paragraph);
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching data', error);
+          });
+      </script>-->
+    <!-- this script is functioning -->
+    <!-- <script>
+       fetch('http://localhost:3000/products')
+         .then(response => response.json())
+         .then(data => {
+           // Process the data and generate HTML elements
+           const dataContainer = document.getElementById('data-container');
+
+           const table = document.createElement('table');
+           const headerRow = document.createElement('tr');
+           const headers = ['ID', 'Type', 'Product Name'];
+
+           // Create table headers
+           headers.forEach(headerText => {
+             const header = document.createElement('th');
+             header.textContent = headerText;
+             headerRow.appendChild(header);
+           });
+
+           table.appendChild(headerRow);
+
+           // Create table rows
+           data.forEach(item => {
+             const row = document.createElement('tr');
+             const rowData = [item.id, item.type, item.product_name];
+
+             rowData.forEach(cellData => {
+               const cell = document.createElement('td');
+               cell.textContent = cellData;
+               row.appendChild(cell);
+             });
+
+             table.appendChild(row);
+           });
+
+           dataContainer.appendChild(table);
+         })
+         .catch(error => {
+           console.error('Error fetching data', error);
+         });
+     </script>   this is a functioning script -->
+    <!-- MAIN FETCH SCRIPT  <script>
+      fetch('http://localhost:3000/products')
+        .then(response => response.json())
+        .then(data => {
+          // Process the data and generate HTML elements
+          const dataContainer = document.getElementById('data-container');
+
+          const table = document.createElement('table');
+          const headerRow = document.createElement('tr');
+          const headers = ['ID', 'Type', 'Product Name', 'Delivery Note Number', 'LOA', 'Number of Products', 'Created At', 'Updated At', 'Client ID'];
+
+          // Create table headers
+          headers.forEach(headerText => {
+            const header = document.createElement('th');
+            header.textContent = headerText;
+            headerRow.appendChild(header);
+          });
+
+          table.appendChild(headerRow);
+
+          // Create table rows
+          data.forEach(item => {
+            const row = document.createElement('tr');
+            const rowData = [
+              item.id,
+              item.type,
+              item.product_name,
+              item.delivery_note_number,
+              item.loa,
+              item.number_of_products,
+              item.created_at,
+              item.updated_at,
+              item.client_id
+            ];
+
+            rowData.forEach(cellData => {
+              const cell = document.createElement('td');
+              cell.textContent = cellData;
+              row.appendChild(cell);
+            });
+
+            table.appendChild(row);
+          });
+
+          dataContainer.appendChild(table);
+        })
+        .catch(error => {
+          console.error('Error fetching data', error);
+        });
+    </script>-->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("clients")
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    generateTable(data);
+                    fetchAndFilterData();
+                })
+                .catch(function (error) {
+                    console.log("Error fetching data:", error);
+                });
+
+            function generateTable(data) {
+                var table = document.getElementById("clients");
+
+                data.forEach(function (client) {
+                    var tr = document.createElement("tr");
+                    tr.setAttribute("class", "filter-button");
+                    tr.setAttribute("data-filter", client.id);
+
+                    var td1 = document.createElement("td");
+                    td1.setAttribute("width", "60px");
+
+                    var imgBx = document.createElement("div");
+                    imgBx.className = "imgBx";
+                    imgBx.innerHTML = "<i class='bx bxs-bank bankLogo'></i>";
+
+                    td1.appendChild(imgBx);
+                    tr.appendChild(td1);
+
+                    var td2 = document.createElement("td");
+
+                    var h4 = document.createElement("h4");
+                    h4.textContent = client.client_name;
+
+                    h4.appendChild(document.createElement("br"));
+                    td2.appendChild(h4);
+                    tr.appendChild(td2);
+
+                    table.appendChild(tr);
+                });
+            }
+
+            function fetchAndFilterData() {
+                fetch("products")
+                    .then(response => response.json())
+                    .then(data => {
+                        let originalData = data;
+                        const dataContainer = document.getElementById('data-container');
+
+                        const table = document.createElement('table');
+                        const headerRow = document.createElement('tr');
+                        const headers = ['ID', 'Type', 'Product Name', 'Delivery Note Number', 'LOA', 'Number of Products', 'Created At', 'Updated At', 'Client ID'];
+
+                        headers.forEach(headerText => {
+                            const header = document.createElement('th');
+                            header.textContent = headerText;
+                            headerRow.appendChild(header);
+                        });
+
+                        table.appendChild(headerRow);
+
+                        function createRows(filteredData) {
+                            while (table.rows.length > 1) {
+                                table.deleteRow(1);
+                            }
+
+                            filteredData.forEach(item => {
+                                const row = document.createElement('tr');
+                                const rowData = [
+                                    item.id,
+                                    item.type,
+                                    item.product_name,
+                                    item.delivery_note_number,
+                                    item.loa,
+                                    item.number_of_products,
+                                    item.created_at,
+                                    item.updated_at,
+                                    item.client_id
+                                ];
+
+                                rowData.forEach(cellData => {
+                                    const cell = document.createElement('td');
+                                    cell.textContent = cellData;
+                                    row.appendChild(cell);
+                                });
+
+                                table.appendChild(row);
+                            });
+
+                            dataContainer.appendChild(table);
+                        }
+
+                        createRows(originalData);
+
+                        function filterData(clientId) {
+                            if (clientId === 'All') {
+                                createRows(originalData);
+                            } else {
+                                const filteredData = originalData.filter(item => item.client_id.toString() === clientId);
+                                createRows(filteredData);
+                            }
+                        }
+
+                        const filterButtons = document.querySelectorAll('.filter-button');
+                        filterButtons.forEach(button => {
+                            button.addEventListener('click', () => {
+                                const clientId = button.getAttribute('data-filter');
+                                filterData(clientId);
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data', error);
+                    });
+            }
+        });
+
+    </script>
+
+
+</body>
+</html>

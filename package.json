@@ -1,0 +1,33 @@
+{
+  "name": "bamcardtrezortest",
+  "productName": "BamCard Elektronski Trezor",
+  "version": "1.0.0",
+  "description": "Testna verzija",
+  "main": "app/electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder"
+  },
+  "author": "Adnan Tinjak",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^23.1.1",
+    "electron-builder": "^24.4.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mime": "^3.0.0",
+    "pg": "^8.9.0",
+    "update-electron-app": "^2.0.1"
+  },
+  "build": {
+    "appId": "com.BamCardTrezor",
+    "files": "!build-assets${/*}",
+    "win": {
+      "icon": "./app/src/server/images/bamcardlogoMain.ico"
+    }
+  }
+}

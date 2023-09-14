@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title> Elektronsko vodjenje trezora | Person Panel </title>
+    <script src="https://kit.fontawesome.com/665181cd03.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="admin.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="referrer" content="strict-origin" />
+
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx'>
+                <img src="bamcardlogo.png" width="30px" height="30px" draggable="false" />
+            </i>
+            <span class="logo_name">Person</span>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="#" class="active">
+                    <i class='bx bx-task'></i>
+                    <span class="links_name">Person Panel</span>
+                </a>
+            </li>
+            <li class="log_out">
+                <a href="logout">
+                    <i class='bx bx-log-out'></i>
+                    <span class="links_name">Odjavi se</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <section class="home-section">
+        <nav>
+            <div class="sidebar-button">
+                <i class='bx bx-menu sidebarBtn'></i>
+                <span class="dashboard">Panel</span>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-center">
+                    <i class='bx bx-user'></i>
+                    <span class="admin_name" id="nameAndSurname">
+                        <script>
+                            fetch('/namesAndSurnames')
+                                .then(response => response.json())
+                                .then(data => {
+                                    const nameAndSurnameElement = document.getElementById('nameAndSurname');
+                                    data.forEach((user, index) => {
+                                        const userElement = document.createElement('span');
+                                        userElement.textContent = user;
+
+                                        nameAndSurnameElement.appendChild(userElement);
+                                        if (index !== data.length - 1) {
+                                            const whitespaceElement = document.createTextNode(' - ');
+                                            nameAndSurnameElement.appendChild(whitespaceElement);
+                                        }
+                                    });
+                                });
+
+
+                        </script>
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="home-content">
+            <div class="overview-boxes">
+                <div class="box">
+                    
+                </div>
+                <div class="box">
+                    
+                </div>
+                <div class="box">
+                    
+                </div>
+                <div class="box">
+                   
+                </div>
+            </div>
+
+            <div class="sales-boxes">
+                <div class="recent-sales box">
+                   
+                   
+                </div>
+                <div class="top-sales box">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function () {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+     
+
+    </script>
+</body>
+</html>

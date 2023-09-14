@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Elektronsko vodjenje trezora | Trezor Panel </title>
+    <link rel="stylesheet" href="trezor.css">
+    <link rel="stylesheet"  href="nalog.css" id="screenStylesheet">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx'>
+        <img src="/media/bamcard-logo.png" width="30px" height="30px" draggable="false"/>
+      </i>
+      <span class="logo_name">Trezor</span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="/" >
+            <i class='bx bx-down-arrow-circle'></i>
+            <span class="links_name">Ulaz novih kartica</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-book-content'></i>
+            <span class="links_name">Radni nalog </span>
+          </a>
+        </li>
+
+       <!-- <li>
+          <a href="/Trezor/pregled.html"> 
+            <i class='bx bx-book-content'></i>
+            <span class="links_name">Pregled </span>
+          </a>
+        </li>--> 
+
+        
+       
+
+        
+        <li>
+          <a href="otpis.html" >
+            <i class='bx bx-x-circle'></i>
+            <span class="links_name">Otpis </span>
+          </a>
+        </li>
+
+        <li>
+          <a href="/Trezor/trezor-dashboard.html" >
+            <i class='bx bxs-dashboard' ></i>
+            <span class="links_name">Trezor Dashboard </span>
+          </a>
+        </li>
+
+        <li>
+          <a href="reporting.html" >
+            <i class='bx bxs-report'></i>
+            <span class="links_name">Reporting</span>
+          </a>
+        </li>
+        
+      </ul>
+  </div>
+  
+  <section id="section" class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Radni nalog</span>
+      </div>
+      <div class="place"></div>
+      <div class="profile-details" id="details">
+        <div class="profile-center">
+        <i class='bx bx-user'></i>
+        <span class="admin_name">User</span>
+      </div>
+      </div>
+      
+    </nav>
+      
+    <div class="home-content" >
+      <div id="container" class="container">
+        <div class="wrapper">
+          <div class="" id="nalog-top"><span ><b>Nalog za personalizaciju kartica</b></span></div>
+          <input type="text" id="input-box-nalog" placeholder="br. naloga">
+
+        </div>
+        
+        <div class="title"></div>
+    <div id="content-pdf" class="content">
+      <!--original form place-->
+      
+        <!---->
+        <div id="solver">
+        <div class="user-details" id="dropdowns">
+          <div class="user-details" id="dropdown-menu-1">
+            <div class="input-box">
+             
+              <div class="input-box"> 
+                <span class="details">Naručilac</span>
+              <select id="clients-dropdown" name="client_id">
+                <option value="type">-- Select Client --</option>
+              </select>
+            </div>
+            </div>
+        </div>
+        <div class="user-details" id="dropdown-menu-2">
+          <div class="input-box">
+            
+            <div class="input-box">
+              <span class="details">Vrsta kartice</span>
+              <select id="products-dropdown" name="product_name">
+                <option value="product_name">-- Select Product --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        </div>
+        
+        <div class="user-details" id="table-spacing">
+            
+
+            <div class="user-details">
+                
+  <div class="table-mover">
+                <table  id="table-size">
+                  <tr>
+                    <th id="table-title"></th>
+                    <th class="title" id="table-title">Osnovna</th>
+                    <th class="title" id="table-title">Dodatna</th>
+                    <th class="title" id="table-title">Ukupno</th>
+                  </tr>
+                  <tr>
+                    <th class="title" id="table-title">Nova</th>
+                    <td><div class="input-box" id="table-box">
+                    <input type="text" placeholder="value" required id="table-input">
+                    </div></td>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                    <td><div class="input-box" id="table-box">
+                    <input type="text" placeholder="value" required id="table-input">
+                    </div></td>
+                  </tr>
+                  <tr>
+                    <th class="title" id="table-title">Renewal</th>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                  </tr>
+                  <tr>
+                    <th class="title" id="table-title">Reprint</th>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                    <td><div class="input-box" id="table-box">
+                      <input type="text" placeholder="value" required id="table-input">
+                      </div></td>
+                  </tr>
+                </table>
+
+              </div>
+                
+              </div>
+
+              <div class="user-details">
+
+              <table id="table-size-1">
+                  <tr >
+                    <th rowspan="4" id="table-title-1"><span>MAŠINE NA KOJIMA SU SE PERSONALIZIRALE KARTICE</span></th>
+                    <th id="table-title"></th>
+                    <th id="table-title"></th>
+                  </tr>
+                  <tr >
+                    <td><input type="text" placeholder="value" required id="table-input-1"></td>
+                    <td id="chechk"><input type="checkbox"id="box-size" /></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" placeholder="value" required id="table-input-1"></td>
+                    <td id="chechk"><input type="checkbox" id="box-size"/></td>
+                  </tr>
+                  <tr>
+                    <td><input type="text" placeholder="value" required id="table-input-1"></td>
+                    <td id="chechk"><input type="checkbox" id="box-size" /></td>
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+        </div>
+        <div class="title" ></div>
+        
+        <div class="user-details">
+          
+          <div class="input-box" id="nalog-input-box">
+            <span class="details" id="top-spacing-nalog-izdao"><b>Nalog izdao:</b></span>
+            <input type="text" placeholder="Ime i prezime" required id="super-input">
+            <h2 id="release-name"><i>Perso supervizor</i></h2>
+            
+          </div>
+          <img src="bamcardlogo.png" alt="placeholder image" id="nalog-image">
+        </div>
+        <div class="title"></div>
+        <div class="user-details" id="time">  <div class="card">
+          <span>Vrijeme početka</span>
+          
+            <input type="time" placeholder="oni upisuju" required>
+          
+          
+        </div>
+
+         </div>
+        <div class="title"></div>
+        <!--testiranje forme-->
+        <form action="submit-radninalog1" method="POST">
+        <div class="user-details" id="trezor-state">
+          <div class="input-box">
+            <span class="details" id="trezor-details"><b>STANJE TREZORA</b></span>
+           <!--  <input type="number" name="trezorState" id="input-state" placeholder="Unesi" >-->
+            <output class="output-filed" id="output-state"></output>
+            <!--<output class="output-field" id="output"></output>
+            <button class="button-7-11" id="button-mover" onclick="changeOutputValue()">Change Value</button>-->
+          </div>
+        </div>
+        <div class="title"></div>
+        
+        <div class="title"></div>
+        
+
+        
+        <div class="user-details" id="user-details-rows">
+          <div class="input-box-container" id="input-box-container-left">
+            <div class="input-box" id="input-box-left">
+              <span class="details" id="top-spacing"><u>KARTICE IZDALI IZ TREZORA</u></span>
+
+              <input type="number" name="karticeIzdali" id="input-left" placeholder="Unesi">
+             <!--<output class="output-filed" id="output-left"></output>-->
+             <!-- <button class="button-7" onclick="updateOutputLeft()">Update</button>-->
+             
+              
+              
+              
+
+
+            </div>
+            <div class="input-box" id="input-box-rows-2">
+              <input type="date" name="karticeIzdaliDate" placeholder="" required>
+            </div>
+          </div>
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+              <span class="details" id="top-spacing"><u>KARTICE PERSONALIZIRALI</u></span>
+             <!--  <input type="number" name="karticePerson" id="input-rows" placeholder="Unesi" > 
+              <button class="button-7" onclick="updateOutputRows()">Update</button>
+              <output class="output-filed" id="output-rows" style="display:none;"></output> opcija da modu da kazu nije uradio neku iz nekog razloga/opis -->
+              <output class="output-filed" id="output-rows"></output>
+            </div>
+            <div class="input-box" id="input-box-rows-2">
+              <input type="date" name="karticePersonDate" placeholder="" required>
+              
+            </div>
+          </div>
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+                <span class="details" id="top-spacing"><u>ŠKART</u></span>
+               <input type="number" name="skart" id="input-skart" placeholder="Unesi" >
+               <!--<output class="output-filed" id="output-skart"></output>-->
+               
+            </div>
+            <div class="input-box" id="input-box-rows-2">
+                <input type="date" name="skartDate" placeholder="" required>
+            </div>
+        </div>
+        
+          
+           <div class="input-box" id="input-box-rows">
+            <span class="details"><u>KARTICE UNIŠTENE</u></span>
+            <span>OD </span><input type="time" name="unisteneOd" id="small-input" placeholder="" required> DO <input type="time" name="unisteneDo" id="small-input" placeholder="" required>
+          </div>
+        </div>
+        <!--
+
+        <div class="input-box" id="input-box-rows">
+          <span class="details"><u>KARTICE UNIŠTENE</u></span>
+          <span>OD </span>
+          <output class="output-field" id="output-unistene-od"></output>
+          <span> DO </span>
+          <output class="output-field" id="output-unistene-do"></output>
+        </div>
+      </div>-->
+        
+        <div class="title"></div>
+        <div class="user-details" id="user-details-rows">
+          <div class="input-box-container" id="input-box-container-left">
+            <div class="input-box" id="input-box-left">
+              <span class="details" id="top-spacing"><u>KARTICE ZADUŽILI U TREZOR</u></span>
+             <!--  <input type="number" name="karticeZaduzili" id="input-zaduzili" placeholder="Unesi">-->
+
+            
+
+             <output class="output-filed" id="output-zaduzili"></output>
+            </div>
+            
+          </div>
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+              <span class="details" id="top-spacing"><u>PERSONALIZIRANE KARTICE PREUZELI</u></span>
+            <!--   <input type="number" name="karticePreuzeli" id="input-preuzeli" placeholder="Unesi"> -->
+              
+              <output class="output-filed" id="output-preuzeli"></output>
+            </div>
+            <div class="input-box" id="input-box-rows-2">
+              <input type="date" name="karticePreuzeliDate" placeholder="" required>
+            </div>
+          </div>
+          
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+              <span class="details" id="top-spacing"><u>UKUPAN BROJ KOVERTI</u></span>
+             <!--  <input type="number" name="totalKoverte" id="input-koverte" placeholder="Unesi">-->
+
+              <output class="output-filed" id="output-koverte"></output>
+            </div>
+            
+          </div>
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+              <span class="details" id="top-spacing"><u>ŠKART KOVERTE</u></span>
+               <input type="number" name="skartKoverte" id="skart-background"  placeholder="Unesi"  required>
+              <!--<output class="output-filed" id="output-skart-koverte"></output>-->
+            </div>
+            <div class="input-box" id="input-box-rows-2">
+              <input type="date" name="skartKoverteDate" placeholder="" required>
+            </div>
+          </div>
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+              <span class="details" id="top-spacing"><u>UK.BR. CARDHOLDERA</u></span>
+              <!--<input type="number" name="cardholderNumber" id="input-holder" placeholder="Unesi">-->
+
+             
+              <output class="output-filed" id="output-holder"></output>
+            </div>
+            
+            
+          </div>
+
+          <div class="input-box-container" id="input-box-container-rows">
+            <div class="input-box" id="input-box-rows">
+              <span class="details" id="top-spacing"><u>ŠKART CARDHOLDER</u></span>
+              <input type="number" name="skartCardholder" id="skart-background" placeholder="Unesi"  required>
+
+
+              <!--<output class="output-filed" id="output-skart-cardholder"></output>-->
+            </div>
+            
+          </div>
+
+          
+        </div>
+        <div class="title"></div>
+        <div class="input-box" id="nalog-input-box">
+          <span class="details" id="top-spacing-nalog-izdao"><b>PROCES PERSONALIZACIJE KONTORLISAO</b></span>
+          <input type="text" name="supervizor" placeholder="Ime i prezime" required id="super-input">
+          <h2 id="release-name"><i>Perso supervizor</i></h2>
+          
+        </div>
+       
+        
+      
+        
+        <div class="button">
+          <input type="submit" value="Submit" id="final-submit">
+        </div>
+      </form>
+        <div class="title" id="title-new-top"></div>
+        <div class="user-details" id="trezor-state">
+          <div class="input-box">
+            <span class="details" id="trezor-details"><b>NOVO STANJE</b></span>
+            <output class="output-filed" id="output-rows-final"></output>
+            
+          </div>
+          
+        </div>
+
+        
+        <div class="title" id="title-state-end"></div>
+          
+          <div class="user-details" id="time-end"><div class="card">
+            <span>Vrijeme završetka</span>
+            
+              <input type="time" placeholder="oni upisuju" required>
+            
+            
+          </div>
+          <div class="title" id="end-title"></div>
+           </div>
+
+           
+<!--  
+        <div class="input-state">
+          <span class="details">Stanje</span>
+          <input type="number" placeholder="Trenutno Stanje" required id="stanje"></div>
+-->
+
+        
+      
+    </div>
+    
+    <button id="download-btn">Download as PDF</button>
+      </div>
+
+      
+      
+
+      
+      
+
+    </div>
+
+    
+    
+
+
+    </section>
+
+  
+  
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+
+<script>
+  const downloadBtn = document.getElementById('download-btn');
+
+  downloadBtn.addEventListener('click', function() {
+    
+    window.jsPDF = window.jspdf.jsPDF;
+    const doc = new jsPDF({
+      format: 'a4' 
+    });
+
+    
+    const htmlContent = document.getElementById('content-pdf');
+
+    
+    const options = {
+      scale: 1,
+      useCORS: true 
+    };
+
+    
+    html2canvas(htmlContent, options)
+      .then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = doc.internal.pageSize.getWidth(); 
+        const imgHeight = doc.internal.pageSize.getHeight();
+
+        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+        
+        doc.setFontSize(16);
+
+        doc.save('output.pdf');
+      });
+  });
+</script>
+
+
+
+    <script>
+     let sidebar = document.querySelector(".sidebar");
+  let sidebarBtn = document.querySelector(".sidebarBtn");
+  sidebarBtn.onclick = function() {
+    sidebar.classList.toggle("active");
+    if(sidebar.classList.contains("active")){
+    sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+  }else
+    sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+  } 
+  
+  
+   </script>
+
+
+
+
+<script>
+  const clientSelect = document.getElementById('clients-dropdown');
+const productSelect = document.getElementById('products-dropdown');
+
+fetch('/clients')
+  .then(response => response.json())
+  .then(clients => {
+    clients.forEach(client => {
+      const option = document.createElement('option');
+      option.value = client.id;
+      option.text = client.client_name;
+      clientSelect.appendChild(option);
+    });
+  });
+
+clientSelect.addEventListener('change', fetchProducts);
+
+function fetchProducts() {
+  const clientID = clientSelect.value;
+  if (!clientID) {
+    
+    productSelect.innerHTML = '<option value="">-- Select Product --</option>';
+    return;
+  }
+
+  fetch(`/products/${clientID}`)
+    .then(response => response.json())
+    .then(products => {
+      productSelect.innerHTML = '<option value="">-- Select Product --</option>';
+      products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.product_id;
+        option.text = product.name;
+        productSelect.appendChild(option);
+      });
+    });
+}
+
+</script>
+  </body>
+  </html>
+  
